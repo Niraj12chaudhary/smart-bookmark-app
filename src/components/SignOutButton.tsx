@@ -1,25 +1,59 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
 export default function SignOutButton() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const supabase = createClient()
 
   const handleSignOut = async () => {
     setLoading(true)
     
-    const { error } = await supabase.auth.signOut()
-    
-    if (error) {
-      console.error('Error signing out:', error)
-    } else {
-      router.push('/login')
+    try {
+      // First, try server-side sign out
+      const serverResponse = await fetch('/api/auth/signout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      
+      if (!serverResponse.ok) {
+        console.warn('Server sign out failed, trying client-side')
+      }
+      
+      // Then, client-side sign out as backup
+      const { error } = await supabase.auth.signOut()
+      
+      if (error) {
+        console.error('Client sign out error:', error)
+        alert('Failed to sign out. Please try again.')
+        return
+      }
+      
+      // Clear any local storage or cookies
+      if (typeof window !== 'undefined') {
+        localStorage.clear()
+        sessionStorage.clear()
+        
+        // Clear all cookies
+        document.cookie.split(";").forEach(function(c) { 
+          document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+      }
+      
+      // Force redirect to login page
+      window.location.href = '/login'
+      
+    } catch (error) {
+      console.error('Unexpected error during sign out:', error)
+      alert('An unexpected error occurred. Please try again.')
+    } finally {
+      setLoading(false)
     }
-    
-    setLoading(false)
   }
 
   return (
