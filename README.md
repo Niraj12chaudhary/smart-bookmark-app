@@ -129,43 +129,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Deployment to Vercel
 
-### Step-by-Step Instructions:
-
-1. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "Initial commit"
-   git push origin main
-   ```
-
-2. **Connect to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "New Project"
-   - Import your GitHub repository
-   - Vercel will automatically detect it's a Next.js project
-
-3. **Configure Environment Variables**
-   In Vercel dashboard → Settings → Environment Variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-
-4. **Update Supabase Redirect URL**
-   In Supabase dashboard → Authentication → URL Configuration:
-   - Add your Vercel URL: `https://your-app.vercel.app/auth/callback`
-
-5. **Deploy**
-   - Click "Deploy" in Vercel
-   - Your app will be live at the provided Vercel URL
-
-### Required Environment Variables for Vercel:
-```
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
-```
 
 ## Problems Faced and Solutions
 
@@ -207,6 +171,5 @@ The complete SQL schema is available in `database/schema.sql`. Key points:
 - Error handling is implemented throughout the application
 - Loading states provide better user experience
 
-## License
 
-MIT License - feel free to use this project as a template or reference.
+
